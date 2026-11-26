@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simulasi Tes Psikotes - 21 Halaman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tabular-nums {
+            font-variant-numeric: tabular-nums;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .question-row {
+            transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+        }
+
+        .btn-choice:active {
+            transform: scale(0.96);
+        }
+
+        /* Styling untuk tombol pilihan tipe soal */
+        .type-option {
+            transition: all 0.15s ease;
+        }
+        .type-option.active {
+            background-color: #4f46e5;
+            color: #ffffff;
+            border-color: #4f46e5;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+        .type-option:not(.active):hover {
+            border-color: #c7d2fe;
+            background-color: #eef2ff;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <!-- ==================== 1. LAYAR AWAL (START SCREEN) ==================== -->
+    <div id="start-screen" class="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-xl bg-white rounded-3xl shadow-xl shadow-slate-200/70 border border-slate-200/80 p-6 sm:p-10">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold tracking-wide uppercase mb-4">
+                <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+                Simulasi Kecepatan & Ketelitian
+            </div>
+
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+                Simulasi Tes Psikotes Berhitung
+            </h1>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
+                Uji konsentrasi, kecepatan kalkulasi, dan konsistensi fokus Anda dalam 21 sesi beruntun dengan perpindahan halaman otomatis setiap 1 menit.
+            </p>
+
+            <!-- Info Struktur Tes -->
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 mb-6">
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4">
+                    <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Jumlah Halaman</div>
+                    <div class="text-lg sm:text-2xl font-extrabold text-slate-900 font-mono tabular-nums">21 Hal</div>
+                    <div class="text-[11px] text-slate-500 mt-0.5">Otomatis / menit</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4">
+                    <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Soal / Halaman</div>
+                    <div class="text-lg sm:text-2xl font-extrabold text-slate-900 font-mono tabular-nums">98 Soal</div>
+                    <div class="text-[11px] text-slate-500 mt-0.5">Total 2.058 soal</div>
+                </div>
+                <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-3.5 sm:p-4">
+                    <div class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-1">Total Durasi</div>
+                    <div class="text-lg sm:text-2xl font-extrabold text-indigo-600 font-mono tabular-nums">21 Menit</div>
+                    <div class="text-[11px] text-slate-500 mt-0.5">01:00 / halaman</div>
+                </div>
+            </div>
+
+            <!-- ===== FITUR BARU: PEMILIHAN TIPE SOAL ===== -->
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2.5">
+                    <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                        Tipe Soal Penjumlahan
+                    </label>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" data-type="mixed" class="type-option active px-2 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-semibold text-xs sm:text-sm flex flex-col items-center gap-1 cursor-pointer">
+                        <span class="font-mono font-extrabold text-sm sm:text-base">0–9 & 10–49</span>
+                        <span class="text-[10px] sm:text-[11px] font-medium opacity-80">Campur (default)</span>
+                    </button>
+                    <button type="button" data-type="tens" class="type-option px-2 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-semibold text-xs sm:text-sm flex flex-col items-center gap-1 cursor-pointer">
+                        <span class="font-mono font-extrabold text-sm sm:text-base">10–49</span>
+                        <span class="text-[10px] sm:text-[11px] font-medium opacity-80">Puluhan saja</span>
+                    </button>
+                    <button type="button" data-type="ones" class="type-option px-2 py-3 rounded-xl border-2 border-slate-200 bg-white text-slate-700 font-semibold text-xs sm:text-sm flex flex-col items-center gap-1 cursor-pointer">
+                        <span class="font-mono font-extrabold text-sm sm:text-base">0–9</span>
+                        <span class="text-[10px] sm:text-[11px] font-medium opacity-80">Satuan saja</span>
+                    </button>
+                </div>
+                <p id="type-hint" class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+                    Campuran angka satuan (0–9) dan puluhan (10–49) — variasi soal paling seimbang.
+                </p>
+            </div>
+
+            <!-- Ketentuan Mekanisme Tes -->
+            <div class="bg-slate-900 text-white rounded-2xl p-5 mb-7">
+                <h2 class="text-xs font-bold uppercase tracking-wider text-slate-300 mb-3 flex items-center gap-2">
+                    <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Ketentuan Pelaksanaan
+                </h2>
+                <ul class="space-y-2 text-xs sm:text-sm text-slate-300 list-disc list-inside leading-relaxed">
+                    <li>Setiap soal menyediakan pilihan tombol <span class="font-mono font-bold text-white bg-slate-800 px-1.5 py-0.5 rounded">0</span> dan <span class="font-mono font-bold text-white bg-slate-800 px-1.5 py-0.5 rounded">1</span> tepat di bawah soal.</li>
+                    <li>Layar akan otomatis menggulir (<span class="text-white font-medium">auto-scroll</span>) ke soal berikutnya begitu Anda mengklik pilihan.</li>
+                    <li>Setiap halaman berdurasi <strong class="text-white font-mono">01:00</strong> menit dan berpindah otomatis ke halaman berikutnya.</li>
+                    <li>Evaluasi kecepatan, ketelitian, stabilitas/endurance, dan status kelulusan ditampilkan di akhir tes.</li>
+                </ul>
+            </div>
+
+            <button id="btn-start" type="button" class="w-full py-4 px-6 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-bold text-base sm:text-lg rounded-2xl shadow-lg shadow-indigo-600/25 transition-all cursor-pointer flex items-center justify-center gap-2">
+                <span>Mulai Tes Sekarang</span>
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== 2. LAYAR UJIAN AKTIF (TEST SCREEN) ==================== -->
+    <div id="test-screen" class="hidden fixed inset-0 flex flex-col bg-slate-100 z-40">
+        
+        <!-- Sticky Top Header -->
+        <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 shadow-sm z-30 shrink-0">
+            <div class="max-w-3xl mx-auto flex items-center justify-between gap-2">
+                <!-- Indikator Halaman & Nomor Soal -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="bg-indigo-50 border border-indigo-200/80 rounded-xl px-3 py-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 block leading-none mb-0.5">Halaman</span>
+                        <span id="page-counter" class="font-mono font-extrabold text-sm sm:text-base text-indigo-950 tabular-nums">1 / 21</span>
+                    </div>
+                    <div class="bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 block leading-none mb-0.5">Soal</span>
+                        <span id="question-counter" class="font-mono font-extrabold text-sm sm:text-base text-slate-900 tabular-nums">1 / 98</span>
+                    </div>
+                </div>
+
+                <!-- Timer 1 Menit Per Halaman -->
+                <div id="timer-box" class="flex items-center gap-2 bg-slate-900 text-white px-4 py-2 rounded-xl shadow-inner transition-colors">
+                    <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span id="timer-display" class="font-mono font-extrabold text-lg sm:text-xl tracking-wider tabular-nums">01:00</span>
+                </div>
+
+                <!-- Tombol Selesai Lebih Awal -->
+                <div class="relative">
+                    <button id="btn-finish-early" type="button" class="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-rose-50 hover:text-rose-700 hover:border-rose-300 text-slate-700 text-xs sm:text-sm font-semibold transition-colors cursor-pointer">
+                        Selesai
+                    </button>
+
+                    <!-- Popover Konfirmasi Inline -->
+                    <div id="confirm-popover" class="hidden absolute right-0 top-12 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-4 z-50">
+                        <p class="text-xs font-semibold text-slate-800 mb-1">Akhiri seluruh sesi tes?</p>
+                        <p class="text-[11px] text-slate-500 mb-3">Hasil akan dihitung berdasarkan soal yang telah dikerjakan.</p>
+                        <div class="flex items-center justify-end gap-2">
+                            <button id="btn-cancel-finish" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100 cursor-pointer">Batal</button>
+                            <button id="btn-confirm-finish" type="button" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-rose-600 hover:bg-rose-700 text-white cursor-pointer">Ya, Selesai</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Bar Halaman -->
+            <div class="max-w-3xl mx-auto mt-2.5 bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                <div id="page-progress-bar" class="bg-indigo-600 h-full transition-all duration-150" style="width: 1%"></div>
+            </div>
+        </header>
+
+        <!-- Area Daftar Soal Vertikal -->
+        <main class="relative flex-1 overflow-hidden flex flex-col items-center">
+            <!-- Gradient Mask Atas & Bawah -->
+            <div class="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-slate-100 via-slate-100/80 to-transparent z-10"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-slate-100 via-slate-100/80 to-transparent z-10"></div>
+
+            <!-- Viewport Soal Aktif -->
+            <div id="questions-viewport" class="w-full max-w-md sm:max-w-lg h-full overflow-y-auto no-scrollbar px-4 relative">
+                <div id="top-spacer" class="w-full"></div>
+                <div id="questions-list" class="flex flex-col gap-3.5"></div>
+                <div id="bottom-spacer" class="w-full"></div>
+            </div>
+
+            <!-- Layar Tunggu Jika 98 Soal Selesai Sebelum 1 Menit Habis -->
+            <div id="page-complete-overlay" class="hidden absolute inset-0 bg-slate-100/95 backdrop-blur-sm z-20 flex flex-col items-center justify-center p-6 text-center">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4 shadow-sm">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-1">
+                    Halaman <span id="completed-page-num">1</span> Selesai!
+                </h2>
+                <p class="text-sm text-slate-600 max-w-sm mb-5">
+                    Seluruh 98 soal pada halaman ini telah terjawab. Halaman berikutnya akan dimulai otomatis saat timer habis.
+                </p>
+                <div class="bg-white border border-slate-200 rounded-2xl px-6 py-3 shadow-sm">
+                    <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 block">Halaman Berikutnya Dalam</span>
+                    <span id="overlay-countdown" class="font-mono font-extrabold text-2xl text-indigo-600 tabular-nums">00:15</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== 3. LAYAR HASIL AKHIR (RESULT DASHBOARD) ==================== -->
+    <div id="result-screen" class="hidden w-full bg-slate-50 py-6 px-4 sm:p-8 pb-16">
+        <div class="max-w-5xl mx-auto space-y-6">
+
+            <!-- 1. BANNER PENGUMUMAN KELULUSAN SELEKSI -->
+            <div id="announcement-banner" class="rounded-3xl p-6 sm:p-8 border-2 shadow-lg transition-all">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                        <div id="announcement-icon" class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
+                            <!-- Icon dinamis -->
+                        </div>
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span id="announcement-tag" class="px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider">
+                                    PENGUMUMAN HASIL SELEKSI
+                                </span>
+                                <span id="announcement-tier" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-white/90 text-slate-800 border border-slate-200/80">
+                                    Klasifikasi: -
+                                </span>
+                            </div>
+                            <h2 id="announcement-title" class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                                STATUS KELULUSAN
+                            </h2>
+                            <p id="announcement-desc" class="text-sm mt-1.5 leading-relaxed">
+                                Keterangan hasil evaluasi seleksi.
+                            </p>
+                        </div>
+                    </div>
+                    <button id="btn-restart" type="button" class="px-5 py-3 bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white font-bold text-sm rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>Ulangi Tes</span>
+                    </button>
+                </div>
+
+                <!-- Checklist 3 Syarat Kelulusan -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6 pt-5 border-t border-black/10">
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-3.5 border border-black/5 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">1. Syarat Kecepatan</div>
+                            <div class="text-xs font-semibold text-slate-800 mt-0.5">45 – 65 soal/mnt (≥ 945 soal)</div>
+                        </div>
+                        <span id="req-speed-status" class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg font-mono shrink-0">-</span>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-3.5 border border-black/5 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">2. Syarat Ketelitian</div>
+                            <div class="text-xs font-semibold text-slate-800 mt-0.5">Akurasi ≥ 92% – 95%</div>
+                        </div>
+                        <span id="req-acc-status" class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg font-mono shrink-0">-</span>
+                    </div>
+                    <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-3.5 border border-black/5 flex items-center justify-between gap-2">
+                        <div>
+                            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">3. Syarat Stabilitas</div>
+                            <div class="text-xs font-semibold text-slate-800 mt-0.5">Fluktuasi wajar ± 5–10 soal/mnt</div>
+                        </div>
+                        <span id="req-stab-status" class="text-[11px] font-extrabold px-2.5 py-1 rounded-lg font-mono shrink-0">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. REKAPITULASI SKOR UTAMA -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/60 border border-slate-200 p-6 sm:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-2 pb-5 border-b border-slate-100">
+                    <div>
+                        <span id="result-badge" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 mb-1.5">
+                            Tes Selesai
+                        </span>
+                        <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+                            Rekapitulasi Skor Utama
+                        </h1>
+                    </div>
+                    <div id="res-time-used" class="text-xs font-mono font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-xl">
+                        Durasi Aktif: 00:00
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
+                    <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Total Terjawab</div>
+                        <div class="text-2xl font-extrabold text-slate-900 font-mono tabular-nums">
+                            <span id="res-answered">0</span>
+                            <span class="text-sm font-semibold text-slate-400">/ 2.058</span>
+                        </div>
+                        <div class="text-xs text-slate-500 mt-1" id="res-completion-pct">Target aman: ≥ 945 soal</div>
+                    </div>
+
+                    <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4">
+                        <div class="text-xs font-semibold text-emerald-700 uppercase tracking-wider mb-1">Jawaban Benar</div>
+                        <div class="text-2xl font-extrabold text-emerald-700 font-mono tabular-nums" id="res-correct">0</div>
+                        <div class="text-xs font-semibold text-emerald-600 mt-1">
+                            Akurasi: <span id="res-accuracy" class="font-mono">0%</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-rose-50/70 border border-rose-200 rounded-2xl p-4">
+                        <div class="text-xs font-semibold text-rose-700 uppercase tracking-wider mb-1">Jawaban Salah</div>
+                        <div class="text-2xl font-extrabold text-rose-700 font-mono tabular-nums" id="res-wrong">0</div>
+                        <div class="text-xs text-rose-600 mt-1" id="res-error-rate">Tingkat salah: 0%</div>
+                    </div>
+
+                    <div class="bg-indigo-50/70 border border-indigo-200 rounded-2xl p-4">
+                        <div class="text-xs font-semibold text-indigo-700 uppercase tracking-wider mb-1">Kecepatan (÷ 21 Menit)</div>
+                        <div class="text-2xl font-extrabold text-indigo-700 font-mono tabular-nums" id="res-speed-21">0.0</div>
+                        <div class="text-xs text-indigo-600 mt-1" id="res-speed-active">Tempo aktif: 0.0 soal/mnt</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. GRAFIK KONSISTENSI PER HALAMAN -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/60 border border-slate-200 p-6 sm:p-8">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+                    <div>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Grafik Konsistensi Per Halaman (Hal. 1 – 21)</h2>
+                        <p class="text-xs text-slate-500">Kurva performa pengerjaan per menit (maks. 98 soal/halaman) untuk menilai stabilitas tanpa drop tajam</p>
+                    </div>
+                    <div class="flex items-center gap-4 text-xs font-medium">
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-indigo-500 inline-block"></span> Benar</span>
+                        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-rose-400 inline-block"></span> Salah</span>
+                    </div>
+                </div>
+
+                <div class="w-full overflow-x-auto pb-2">
+                    <div id="page-chart" class="min-w-[620px] h-48 flex items-end justify-between gap-1.5 pt-7 px-2 border-b border-slate-200">
+                        <!-- Diisi secara dinamis melalui JavaScript -->
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <button id="btn-toggle-pages" type="button" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 cursor-pointer">
+                        <span id="toggle-pages-text">Lihat Tabel Rincian 21 Halaman</span>
+                        <svg id="pages-chevron" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+
+                    <div id="pages-table-container" class="hidden mt-3 overflow-x-auto border border-slate-200 rounded-2xl">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[11px] font-bold">
+                                    <th class="py-2.5 px-4">Halaman</th>
+                                    <th class="py-2.5 px-4">Terjawab</th>
+                                    <th class="py-2.5 px-4 text-emerald-700">Benar</th>
+                                    <th class="py-2.5 px-4 text-rose-700">Salah</th>
+                                    <th class="py-2.5 px-4">Selisih vs Hal. Sebelumnya</th>
+                                    <th class="py-2.5 px-4">Akurasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pages-table-body" class="divide-y divide-slate-100 font-mono">
+                                <!-- Diisi secara dinamis -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. EVALUASI 3 PILAR & TABEL PATOKAN UMUM -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/60 border border-slate-200 p-6 sm:p-8">
+                <div class="mb-6">
+                    <h2 class="text-lg sm:text-xl font-extrabold text-slate-900">Evaluasi Hasil & Patokan Umum Kandidat Lolos Seleksi</h2>
+                    <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Penilaian kelulusan diukur langsung berdasarkan standar kecepatan, ketelitian, dan stabilitas 21 halaman.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-7">
+                    <!-- Pilar 1: Kecepatan -->
+                    <div class="border border-slate-200 rounded-2xl p-5 flex flex-col justify-between bg-slate-50/60">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-lg">1. Kecepatan</span>
+                                <span id="eval-speed-badge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg">-</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span id="eval-speed-val" class="text-3xl font-extrabold font-mono text-slate-900">0.0</span>
+                                <span class="text-xs font-semibold text-slate-500">soal / menit (÷ 21 mnt)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3">
+                                <div id="eval-speed-bar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="eval-speed-desc" class="text-xs text-slate-600 leading-relaxed mb-4">
+                                Evaluasi kecepatan kerja.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-200/80 text-[11px] font-mono text-slate-500 space-y-1">
+                            <div class="flex justify-between"><span>Total Soal Terjawab:</span><strong id="eval-speed-total" class="text-slate-800">-</strong></div>
+                            <div class="flex justify-between"><span>Target Aman Lolos:</span><strong class="text-slate-800">45 – 65 soal/mnt (945–1.365)</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Pilar 2: Ketelitian -->
+                    <div class="border border-slate-200 rounded-2xl p-5 flex flex-col justify-between bg-slate-50/60">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">2. Ketelitian</span>
+                                <span id="eval-acc-badge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg">-</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span id="eval-acc-val" class="text-3xl font-extrabold font-mono text-slate-900">0.0%</span>
+                                <span class="text-xs font-semibold text-slate-500">akurasi</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3">
+                                <div id="eval-acc-bar" class="bg-emerald-600 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="eval-acc-desc" class="text-xs text-slate-600 leading-relaxed mb-4">
+                                Evaluasi ketelitian jawaban.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-200/80 text-[11px] font-mono text-slate-500 space-y-1">
+                            <div class="flex justify-between"><span>Benar / Dijawab:</span><strong id="eval-acc-ratio" class="text-slate-800">-</strong></div>
+                            <div class="flex justify-between"><span>Target Aman Lolos:</span><strong class="text-slate-800">≥ 92% – 95% (Unggulan ≥ 97%)</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Pilar 3: Stabilitas / Endurance -->
+                    <div class="border border-slate-200 rounded-2xl p-5 flex flex-col justify-between bg-slate-50/60">
+                        <div>
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <span class="text-xs font-extrabold uppercase tracking-wider text-amber-700 bg-amber-50 px-2.5 py-1 rounded-lg">3. Stabilitas / Endurance</span>
+                                <span id="eval-stab-badge" class="text-[11px] font-bold px-2.5 py-1 rounded-lg">-</span>
+                            </div>
+                            <div class="flex items-baseline gap-2 mb-2">
+                                <span id="eval-stab-val" class="text-3xl font-extrabold font-mono text-slate-900">±0.0</span>
+                                <span class="text-xs font-semibold text-slate-500">fluktuasi soal/menit</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mb-3">
+                                <div id="eval-stab-bar" class="bg-amber-500 h-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
+                            <p id="eval-stab-desc" class="text-xs text-slate-600 leading-relaxed mb-4">
+                                Evaluasi stabilitas antar menit (Halaman 1–21).
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-200/80 text-[11px] font-mono text-slate-500 space-y-1">
+                            <div class="flex justify-between"><span>Selisih Max Antar Menit:</span><strong id="eval-stab-maxdiff" class="text-slate-800">-</strong></div>
+                            <div class="flex justify-between"><span>Tren Kurva (Awal → Akhir):</span><strong id="eval-stab-trend" class="text-slate-800">-</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabel Patokan Umum Kandidat yang Lolos Seleksi -->
+                <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                    <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between">
+                        <span class="text-xs font-bold uppercase tracking-wider">Patokan Umum Kandidat yang Lolos Seleksi</span>
+                        <span class="text-[11px] font-mono text-slate-300">Acuan Penilaian Kelulusan</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs sm:text-sm">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-slate-600 text-[11px] uppercase font-bold">
+                                    <th class="py-3 px-4">Indikator</th>
+                                    <th class="py-3 px-4">Rumus / Cara Hitung</th>
+                                    <th class="py-3 px-4 text-indigo-700">Target Aman Lolos</th>
+                                    <th class="py-3 px-4 text-emerald-700">Level Sangat Kuat (Unggulan)</th>
+                                    <th class="py-3 px-4">Catatan Evaluasi</th>
+                                    <th class="py-3 px-4 text-center">Hasil Anda</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 text-xs">
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-3.5 px-4 font-bold text-slate-900">Kecepatan</td>
+                                    <td class="py-3.5 px-4 font-mono text-slate-600">Total soal dijawab ÷ 21 menit</td>
+                                    <td class="py-3.5 px-4 font-semibold text-indigo-700">45 – 65 soal / menit<br><span class="text-[11px] font-mono text-slate-500">(945 – 1.365 soal)</span></td>
+                                    <td class="py-3.5 px-4 font-semibold text-emerald-700">≥ 70 soal / menit<br><span class="text-[11px] font-mono text-slate-500">(≥ 1.470 soal)</span></td>
+                                    <td class="py-3.5 px-4 text-slate-600">Menunjukkan tempo kerja & daya tahan mental</td>
+                                    <td class="py-3.5 px-4 text-center font-mono font-bold" id="bench-speed-cell">-</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-3.5 px-4 font-bold text-slate-900">Ketelitian</td>
+                                    <td class="py-3.5 px-4 font-mono text-slate-600">(Jawaban benar ÷ Total dijawab) × 100%</td>
+                                    <td class="py-3.5 px-4 font-semibold text-indigo-700">≥ 92% – 95%</td>
+                                    <td class="py-3.5 px-4 font-semibold text-emerald-700">≥ 97% – 99%</td>
+                                    <td class="py-3.5 px-4 text-slate-600">Kesalahan sedikit lebih baik daripada asal kebut</td>
+                                    <td class="py-3.5 px-4 text-center font-mono font-bold" id="bench-acc-cell">-</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50/80">
+                                    <td class="py-3.5 px-4 font-bold text-slate-900">Stabilitas</td>
+                                    <td class="py-3.5 px-4 font-mono text-slate-600">Selisih jumlah soal antar menit (Hal. 1–21)</td>
+                                    <td class="py-3.5 px-4 font-semibold text-indigo-700">Fluktuasi wajar<br><span class="font-mono">± 5–10 soal/menit</span></td>
+                                    <td class="py-3.5 px-4 font-semibold text-emerald-700">Kurva rata / naik landai tanpa drop tajam</td>
+                                    <td class="py-3.5 px-4 text-slate-600">Menunjukkan emosi & fokus tetap terjaga</td>
+                                    <td class="py-3.5 px-4 text-center font-mono font-bold" id="bench-stab-cell">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. REKAP SOAL YANG SALAH -->
+            <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/60 border border-slate-200 overflow-hidden">
+                <button id="btn-toggle-wrong" type="button" class="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div class="flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm" id="wrong-badge-count">0</span>
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900">Evaluasi Jawaban Salah</h2>
+                            <p class="text-xs text-slate-500">Klik untuk melihat rincian nomor halaman dan soal yang keliru dijawab</p>
+                        </div>
+                    </div>
+                    <svg id="wrong-chevron" class="w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                <div id="wrong-list-container" class="hidden border-t border-slate-100 px-6 py-4 max-h-96 overflow-y-auto">
+                    <div id="wrong-list" class="divide-y divide-slate-100">
+                        <!-- Diisi secara dinamis -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Konfigurasi Utama Tes
+         */
+        const CONFIG = {
+            TOTAL_PAGES: 21,
+            QUESTIONS_PER_PAGE: 98,
+            SECONDS_PER_PAGE: 60,
+            WINDOW_BEFORE: 2,
+            WINDOW_AFTER: 3,
+            TARGET_SPEED_SAFE: 45.0,
+            TARGET_SPEED_STRONG: 70.0,
+            TARGET_ACC_SAFE: 92.0,
+            TARGET_ACC_STRONG: 97.0,
+            TARGET_STAB_FLUCTUATION: 10.0,
+            // Tipe soal: 'mixed' | 'tens' | 'ones'
+            QUESTION_TYPE: 'mixed'
+        };
+
+        const state = {
+            pages: [],
+            currentPageIdx: 0,
+            currentQuestionIdx: 0,
+            pageTimeLeft: CONFIG.SECONDS_PER_PAGE,
+            timerInterval: null,
+            isRunning: false,
+            isWaitingNextPage: false,
+            totalElapsedSeconds: 0
+        };
+
+        const els = {
+            startScreen: document.getElementById('start-screen'),
+            testScreen: document.getElementById('test-screen'),
+            resultScreen: document.getElementById('result-screen'),
+            btnStart: document.getElementById('btn-start'),
+            btnRestart: document.getElementById('btn-restart'),
+            btnFinishEarly: document.getElementById('btn-finish-early'),
+            confirmPopover: document.getElementById('confirm-popover'),
+            btnCancelFinish: document.getElementById('btn-cancel-finish'),
+            btnConfirmFinish: document.getElementById('btn-confirm-finish'),
+            pageCounter: document.getElementById('page-counter'),
+            questionCounter: document.getElementById('question-counter'),
+            pageProgressBar: document.getElementById('page-progress-bar'),
+            timerDisplay: document.getElementById('timer-display'),
+            timerBox: document.getElementById('timer-box'),
+            questionsViewport: document.getElementById('questions-viewport'),
+            questionsList: document.getElementById('questions-list'),
+            topSpacer: document.getElementById('top-spacer'),
+            bottomSpacer: document.getElementById('bottom-spacer'),
+            pageCompleteOverlay: document.getElementById('page-complete-overlay'),
+            completedPageNum: document.getElementById('completed-page-num'),
+            overlayCountdown: document.getElementById('overlay-countdown'),
+            announcementBanner: document.getElementById('announcement-banner'),
+            announcementIcon: document.getElementById('announcement-icon'),
+            announcementTag: document.getElementById('announcement-tag'),
+            announcementTier: document.getElementById('announcement-tier'),
+            announcementTitle: document.getElementById('announcement-title'),
+            announcementDesc: document.getElementById('announcement-desc'),
+            reqSpeedStatus: document.getElementById('req-speed-status'),
+            reqAccStatus: document.getElementById('req-acc-status'),
+            reqStabStatus: document.getElementById('req-stab-status'),
+            resultBadge: document.getElementById('result-badge'),
+            resAnswered: document.getElementById('res-answered'),
+            resCompletionPct: document.getElementById('res-completion-pct'),
+            resTimeUsed: document.getElementById('res-time-used'),
+            resCorrect: document.getElementById('res-correct'),
+            resAccuracy: document.getElementById('res-accuracy'),
+            resWrong: document.getElementById('res-wrong'),
+            resErrorRate: document.getElementById('res-error-rate'),
+            resSpeed21: document.getElementById('res-speed-21'),
+            resSpeedActive: document.getElementById('res-speed-active'),
+            evalSpeedBadge: document.getElementById('eval-speed-badge'),
+            evalSpeedVal: document.getElementById('eval-speed-val'),
+            evalSpeedBar: document.getElementById('eval-speed-bar'),
+            evalSpeedDesc: document.getElementById('eval-speed-desc'),
+            evalSpeedTotal: document.getElementById('eval-speed-total'),
+            evalAccBadge: document.getElementById('eval-acc-badge'),
+            evalAccVal: document.getElementById('eval-acc-val'),
+            evalAccBar: document.getElementById('eval-acc-bar'),
+            evalAccDesc: document.getElementById('eval-acc-desc'),
+            evalAccRatio: document.getElementById('eval-acc-ratio'),
+            evalStabBadge: document.getElementById('eval-stab-badge'),
+            evalStabVal: document.getElementById('eval-stab-val'),
+            evalStabBar: document.getElementById('eval-stab-bar'),
+            evalStabDesc: document.getElementById('eval-stab-desc'),
+            evalStabMaxDiff: document.getElementById('eval-stab-maxdiff'),
+            evalStabTrend: document.getElementById('eval-stab-trend'),
+            benchSpeedCell: document.getElementById('bench-speed-cell'),
+            benchAccCell: document.getElementById('bench-acc-cell'),
+            benchStabCell: document.getElementById('bench-stab-cell'),
+            pageChart: document.getElementById('page-chart'),
+            btnTogglePages: document.getElementById('btn-toggle-pages'),
+            togglePagesText: document.getElementById('toggle-pages-text'),
+            pagesChevron: document.getElementById('pages-chevron'),
+            pagesTableContainer: document.getElementById('pages-table-container'),
+            pagesTableBody: document.getElementById('pages-table-body'),
+            btnToggleWrong: document.getElementById('btn-toggle-wrong'),
+            wrongBadgeCount: document.getElementById('wrong-badge-count'),
+            wrongChevron: document.getElementById('wrong-chevron'),
+            wrongListContainer: document.getElementById('wrong-list-container'),
+            wrongList: document.getElementById('wrong-list'),
+            typeHint: document.getElementById('type-hint')
+        };
+
+        const TYPE_HINTS = {
+            mixed: 'Campuran angka satuan (0–9) dan puluhan (10–49) — variasi soal paling seimbang.',
+            tens: 'Kedua angka selalu puluhan (10–49) — hasil penjumlahan lebih besar, lebih menantang konsentrasi.',
+            ones: 'Kedua angka selalu satuan (0–9) — fokus kecepatan berhitung dasar.'
+        };
+
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // ===== MODIFIKASI: generateAllPages menyesuaikan QUESTION_TYPE =====
+        function generateAllPages() {
+            const allPages = [];
+            let globalId = 1;
+            const type = CONFIG.QUESTION_TYPE;
+
+            for (let p = 0; p < CONFIG.TOTAL_PAGES; p++) {
+                const pageQuestions = [];
+                for (let q = 0; q < CONFIG.QUESTIONS_PER_PAGE; q++) {
+                    let a, b;
+
+                    if (type === 'ones') {
+                        // Satuan saja: 0–9
+                        a = randomInt(0, 9);
+                        b = randomInt(0, 9);
+                    } else if (type === 'tens') {
+                        // Puluhan saja: 10–49
+                        a = randomInt(10, 49);
+                        b = randomInt(10, 49);
+                    } else {
+                        // Campur (mixed) — logika asli
+                        const typeRoll = Math.random();
+                        if (typeRoll < 0.55) {
+                            a = randomInt(0, 9);
+                            b = randomInt(0, 9);
+                        } else if (typeRoll < 0.80) {
+                            if (Math.random() < 0.5) {
+                                a = randomInt(10, 49);
+                                b = randomInt(1, 9);
+                            } else {
+                                a = randomInt(1, 9);
+                                b = randomInt(10, 49);
+                            }
+                        } else {
+                            a = randomInt(10, 49);
+                            b = randomInt(10, 49);
+                        }
+                    }
+
+                    const sum = a + b;
+                    const correctAnswer = sum % 2 === 0 ? 0 : 1;
+
+                    pageQuestions.push({
+                        globalId: globalId++,
+                        pageNum: p + 1,
+                        numInPage: q + 1,
+                        a: a,
+                        b: b,
+                        sum: sum,
+                        correctAnswer: correctAnswer,
+                        userAnswer: null
+                    });
+                }
+                allPages.push(pageQuestions);
+            }
+
+            return allPages;
+        }
+
+        function formatTime(totalSeconds) {
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function updateSpacers() {
+            const viewportHeight = els.questionsViewport.clientHeight;
+            const halfHeight = Math.max(110, Math.floor(viewportHeight / 2) - 72);
+            els.topSpacer.style.height = `${halfHeight}px`;
+            els.bottomSpacer.style.height = `${halfHeight}px`;
+        }
+
+        function renderQuestionWindow(smoothScroll = true) {
+            const currentQuestions = state.pages[state.currentPageIdx];
+            if (!currentQuestions) return;
+
+            const startIdx = Math.max(0, state.currentQuestionIdx - CONFIG.WINDOW_BEFORE);
+            const endIdx = Math.min(CONFIG.QUESTIONS_PER_PAGE - 1, state.currentQuestionIdx + CONFIG.WINDOW_AFTER);
+
+            const fragment = document.createDocumentFragment();
+
+            for (let i = startIdx; i <= endIdx; i++) {
+                const q = currentQuestions[i];
+                const isActive = i === state.currentQuestionIdx;
+                const isPast = i < state.currentQuestionIdx;
+
+                const row = document.createElement('div');
+                row.id = `q-row-${i}`;
+
+                if (isActive) {
+                    row.className = 'question-row bg-white border-2 border-indigo-600 rounded-2xl p-4 sm:p-5 shadow-xl shadow-indigo-900/10 flex flex-col items-center gap-4 scale-100 opacity-100 z-20';
+                    row.innerHTML = `
+                        <div class="w-full flex items-center justify-between">
+                            <span class="inline-flex items-center justify-center px-2.5 py-0.5 rounded-lg bg-indigo-50 text-indigo-700 font-mono font-bold text-xs">
+                                #${q.numInPage}
+                            </span>
+                            <span class="text-[11px] font-mono font-semibold text-slate-400">
+                                Hal. ${q.pageNum}
+                            </span>
+                        </div>
+
+                        <div class="font-mono font-extrabold text-3xl sm:text-4xl text-slate-900 tracking-tight tabular-nums text-center py-0.5">
+                            ${q.a} <span class="text-indigo-600 mx-1">+</span> ${q.b}
+                        </div>
+
+                        <div class="w-full grid grid-cols-2 gap-3 pt-1">
+                            <button type="button" data-choice="0" class="btn-choice h-14 sm:h-16 rounded-2xl bg-slate-900 hover:bg-indigo-600 text-white font-mono font-extrabold text-2xl sm:text-3xl shadow-md transition-colors cursor-pointer flex items-center justify-center">
+                                0
+                            </button>
+                            <button type="button" data-choice="1" class="btn-choice h-14 sm:h-16 rounded-2xl bg-slate-900 hover:bg-indigo-600 text-white font-mono font-extrabold text-2xl sm:text-3xl shadow-md transition-colors cursor-pointer flex items-center justify-center">
+                                1
+                            </button>
+                        </div>
+                    `;
+                } else {
+                    const opacityClass = isPast ? 'opacity-35 bg-slate-200/60 border-slate-200' : 'opacity-60 bg-white/80 border-slate-200/80';
+
+                    row.className = `question-row border rounded-2xl p-3.5 sm:p-4 flex flex-col items-center gap-2.5 scale-[0.96] pointer-events-none ${opacityClass}`;
+                    row.innerHTML = `
+                        <div class="w-full flex items-center justify-between text-xs font-mono text-slate-400">
+                            <span>#${q.numInPage}</span>
+                            <span>${isPast ? '✓' : ''}</span>
+                        </div>
+                        <div class="font-mono font-bold text-xl sm:text-2xl text-slate-700 tabular-nums text-center">
+                            ${q.a} + ${q.b}
+                        </div>
+                        <div class="w-full grid grid-cols-2 gap-2.5 opacity-45">
+                            <span class="h-10 rounded-xl border border-slate-300 flex items-center justify-center font-mono font-bold text-base text-slate-500">0</span>
+                            <span class="h-10 rounded-xl border border-slate-300 flex items-center justify-center font-mono font-bold text-base text-slate-500">1</span>
+                        </div>
+                    `;
+                }
+
+                fragment.appendChild(row);
+            }
+
+            els.questionsList.innerHTML = '';
+            els.questionsList.appendChild(fragment);
+
+            const activeRow = document.getElementById(`q-row-${state.currentQuestionIdx}`);
+            if (activeRow) {
+                const viewport = els.questionsViewport;
+                const targetScrollTop = activeRow.offsetTop - (viewport.clientHeight / 2) + (activeRow.offsetHeight / 2);
+
+                viewport.scrollTo({
+                    top: Math.max(0, targetScrollTop),
+                    behavior: smoothScroll ? 'smooth' : 'auto'
+                });
+            }
+
+            updateHeaderStats();
+        }
+
+        function updateHeaderStats() {
+            const currentPageNumber = state.currentPageIdx + 1;
+            const currentQNumber = Math.min(state.currentQuestionIdx + 1, CONFIG.QUESTIONS_PER_PAGE);
+
+            els.pageCounter.textContent = `${currentPageNumber} / ${CONFIG.TOTAL_PAGES}`;
+            els.questionCounter.textContent = `${currentQNumber} / ${CONFIG.QUESTIONS_PER_PAGE}`;
+
+            const pct = (state.currentQuestionIdx / CONFIG.QUESTIONS_PER_PAGE) * 100;
+            els.pageProgressBar.style.width = `${Math.max(1, pct)}%`;
+        }
+
+        function handleAnswer(choice) {
+            if (!state.isRunning || state.isWaitingNextPage) return;
+
+            const currentQuestions = state.pages[state.currentPageIdx];
+            const currentQ = currentQuestions[state.currentQuestionIdx];
+            if (!currentQ) return;
+
+            currentQ.userAnswer = choice;
+            state.currentQuestionIdx++;
+
+            if (state.currentQuestionIdx >= CONFIG.QUESTIONS_PER_PAGE) {
+                updateHeaderStats();
+                els.pageProgressBar.style.width = '100%';
+
+                if (state.currentPageIdx >= CONFIG.TOTAL_PAGES - 1) {
+                    finishTest('Seluruh 21 halaman (2.058 soal) telah selesai dikerjakan!');
+                    return;
+                }
+
+                state.isWaitingNextPage = true;
+                els.completedPageNum.textContent = state.currentPageIdx + 1;
+                els.overlayCountdown.textContent = formatTime(state.pageTimeLeft);
+                els.pageCompleteOverlay.classList.remove('hidden');
+                return;
+            }
+
+            renderQuestionWindow(true);
+        }
+
+        function advanceToNextPage() {
+            if (state.currentPageIdx >= CONFIG.TOTAL_PAGES - 1) {
+                finishTest('Waktu 21 menit (21 halaman) telah selesai.');
+                return;
+            }
+
+            state.currentPageIdx++;
+            state.currentQuestionIdx = 0;
+            state.pageTimeLeft = CONFIG.SECONDS_PER_PAGE;
+            state.isWaitingNextPage = false;
+
+            els.pageCompleteOverlay.classList.add('hidden');
+            updateTimerUI();
+            updateSpacers();
+            renderQuestionWindow(false);
+        }
+
+        function startTimer() {
+            clearInterval(state.timerInterval);
+            state.pageTimeLeft = CONFIG.SECONDS_PER_PAGE;
+            state.totalElapsedSeconds = 0;
+            updateTimerUI();
+
+            state.timerInterval = setInterval(() => {
+                if (!state.isRunning) return;
+
+                state.pageTimeLeft--;
+                state.totalElapsedSeconds++;
+                updateTimerUI();
+
+                if (state.isWaitingNextPage) {
+                    els.overlayCountdown.textContent = formatTime(Math.max(0, state.pageTimeLeft));
+                }
+
+                if (state.pageTimeLeft <= 0) {
+                    advanceToNextPage();
+                }
+            }, 1000);
+        }
+
+        function updateTimerUI() {
+            const safeSec = Math.max(0, state.pageTimeLeft);
+            els.timerDisplay.textContent = formatTime(safeSec);
+
+            if (safeSec <= 10) {
+                els.timerBox.classList.remove('bg-slate-900');
+                els.timerBox.classList.add('bg-rose-600');
+            } else {
+                els.timerBox.classList.add('bg-slate-900');
+                els.timerBox.classList.remove('bg-rose-600');
+            }
+        }
+
+        function startTest() {
+            state.pages = generateAllPages();
+            state.currentPageIdx = 0;
+            state.currentQuestionIdx = 0;
+            state.isRunning = true;
+            state.isWaitingNextPage = false;
+
+            els.startScreen.classList.add('hidden');
+            els.resultScreen.classList.add('hidden');
+            els.confirmPopover.classList.add('hidden');
+            els.pageCompleteOverlay.classList.add('hidden');
+            els.testScreen.classList.remove('hidden');
+
+            window.scrollTo(0, 0);
+
+            updateSpacers();
+            renderQuestionWindow(false);
+            startTimer();
+        }
+
+        function evaluateByPatokan(pageStats, totalAnswered, totalCorrect, totalWrong, elapsedSec) {
+            const speedPer21Min = totalAnswered / CONFIG.TOTAL_PAGES;
+            const activeMinutes = Math.max(1 / 60, elapsedSec / 60);
+            const activeTempo = totalAnswered / activeMinutes;
+
+            const accuracyPct = totalAnswered > 0 ? (totalCorrect / totalAnswered) * 100 : 0;
+
+            const diffs = [];
+            for (let i = 1; i < pageStats.length; i++) {
+                diffs.push(Math.abs(pageStats[i].answered - pageStats[i - 1].answered));
+            }
+            const avgStepDiff = diffs.length > 0 ? diffs.reduce((a, b) => a + b, 0) / diffs.length : 0;
+            const maxStepDiff = diffs.length > 0 ? Math.max(...diffs) : 0;
+
+            const firstHalf = pageStats.slice(0, 10).map(p => p.answered);
+            const secondHalf = pageStats.slice(10, 21).map(p => p.answered);
+            const avgFirstHalf = firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length;
+            const avgSecondHalf = secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length;
+            const trendDelta = avgSecondHalf - avgFirstHalf;
+
+            let sharpDrops = 0;
+            for (let i = 1; i < pageStats.length; i++) {
+                if (pageStats[i - 1].answered > 0 && (pageStats[i - 1].answered - pageStats[i].answered) > 15) {
+                    sharpDrops++;
+                }
+            }
+
+            const passSpeed = speedPer21Min >= CONFIG.TARGET_SPEED_SAFE;
+            const strongSpeed = speedPer21Min >= CONFIG.TARGET_SPEED_STRONG;
+            let speedBadge, speedBadgeClass, speedDesc;
+            if (strongSpeed) {
+                speedBadge = 'Level Sangat Kuat (Unggulan)';
+                speedBadgeClass = 'bg-emerald-100 text-emerald-800';
+                speedDesc = `Kecepatan ${speedPer21Min.toFixed(1)} soal/menit (${totalAnswered.toLocaleString('id-ID')} soal) melampaui batas unggulan ≥ 70 soal/menit (≥ 1.470 soal).`;
+            } else if (passSpeed) {
+                speedBadge = 'Target Aman Lolos';
+                speedBadgeClass = 'bg-indigo-100 text-indigo-800';
+                speedDesc = `Kecepatan ${speedPer21Min.toFixed(1)} soal/menit (${totalAnswered.toLocaleString('id-ID')} soal) masuk rentang aman lolos 45–65 soal/menit (945–1.365 soal).`;
+            } else {
+                speedBadge = 'Belum Memenuhi Target';
+                speedBadgeClass = 'bg-rose-100 text-rose-800';
+                speedDesc = `Rata-rata ${speedPer21Min.toFixed(1)} soal/menit (${totalAnswered.toLocaleString('id-ID')} soal ÷ 21 menit) masih di bawah target aman minimal 45 soal/menit (945 soal).`;
+            }
+
+            const passAcc = totalAnswered > 0 && accuracyPct >= CONFIG.TARGET_ACC_SAFE;
+            const strongAcc = totalAnswered > 0 && accuracyPct >= CONFIG.TARGET_ACC_STRONG;
+            let accBadge, accBadgeClass, accDesc;
+            if (totalAnswered === 0) {
+                accBadge = 'Belum Memenuhi Target';
+                accBadgeClass = 'bg-rose-100 text-rose-800';
+                accDesc = 'Belum ada soal yang dijawab.';
+            } else if (strongAcc) {
+                accBadge = 'Level Sangat Kuat (Unggulan)';
+                accBadgeClass = 'bg-emerald-100 text-emerald-800';
+                accDesc = `Akurasi ${accuracyPct.toFixed(1)}% mencapai level unggulan (≥ 97%–99%). Ketelitian sangat terjaga.`;
+            } else if (passAcc) {
+                accBadge = 'Target Aman Lolos';
+                accBadgeClass = 'bg-indigo-100 text-indigo-800';
+                accDesc = `Akurasi ${accuracyPct.toFixed(1)}% memenuhi target aman lolos (≥ 92%–95%).`;
+            } else {
+                accBadge = 'Belum Memenuhi Target';
+                accBadgeClass = 'bg-rose-100 text-rose-800';
+                accDesc = `Akurasi ${accuracyPct.toFixed(1)}% masih di bawah batas aman minimal 92%. Kesalahan sedikit lebih baik daripada asal kebut.`;
+            }
+
+            const activePagesCount = pageStats.filter(p => p.answered > 0).length;
+            const passStab = totalAnswered > 0 && activePagesCount >= 18 && avgStepDiff <= CONFIG.TARGET_STAB_FLUCTUATION && sharpDrops <= 1;
+            const strongStab = passStab && activePagesCount === 21 && avgStepDiff <= 5.0 && sharpDrops === 0 && trendDelta >= -2.0;
+
+            let stabBadge, stabBadgeClass, stabDesc, trendText;
+            if (activePagesCount < 18) {
+                trendText = `Hanya ${activePagesCount}/21 hal. terisi`;
+            } else if (trendDelta >= 1.5) {
+                trendText = `Naik landai (+${trendDelta.toFixed(1)} soal/mnt)`;
+            } else if (trendDelta <= -5.0) {
+                trendText = `Drop tajam (${trendDelta.toFixed(1)} soal/mnt)`;
+            } else {
+                trendText = `Kurva rata (${trendDelta >= 0 ? '+' : ''}${trendDelta.toFixed(1)} soal/mnt)`;
+            }
+
+            if (strongStab) {
+                stabBadge = 'Level Sangat Kuat (Unggulan)';
+                stabBadgeClass = 'bg-emerald-100 text-emerald-800';
+                stabDesc = `Kurva rata / naik landai tanpa drop tajam (fluktuasi rata-rata ±${avgStepDiff.toFixed(1)} soal/menit di 21 halaman). Emosi & fokus sangat terjaga.`;
+            } else if (passStab) {
+                stabBadge = 'Target Aman Lolos';
+                stabBadgeClass = 'bg-indigo-100 text-indigo-800';
+                stabDesc = `Fluktuasi antar menit ±${avgStepDiff.toFixed(1)} soal/menit masih dalam batas wajar (± 5–10 soal/menit) tanpa penurunan tajam.`;
+            } else {
+                stabBadge = 'Belum Memenuhi Target';
+                stabBadgeClass = 'bg-rose-100 text-rose-800';
+                stabDesc = activePagesCount < 18
+                    ? `Baru ${activePagesCount} dari 21 halaman terisi (terjadi drop ke 0 di sisa halaman). Selesaikan seluruh 21 halaman dengan tempo stabil.`
+                    : `Selisih antar menit terlalu fluktuatif (±${avgStepDiff.toFixed(1)} soal/menit) atau terdapat drop tajam melewati batas wajar ± 5–10 soal/menit.`;
+            }
+
+            const isPassed = passSpeed && passAcc && passStab;
+            const isStrongOverall = isPassed && strongSpeed && strongAcc && strongStab;
+
+            return {
+                speedPer21Min,
+                activeTempo,
+                accuracyPct,
+                avgStepDiff,
+                maxStepDiff,
+                trendText,
+                activePagesCount,
+                passSpeed,
+                strongSpeed,
+                speedBadge,
+                speedBadgeClass,
+                speedDesc,
+                passAcc,
+                strongAcc,
+                accBadge,
+                accBadgeClass,
+                accDesc,
+                passStab,
+                strongStab,
+                stabBadge,
+                stabBadgeClass,
+                stabDesc,
+                isPassed,
+                isStrongOverall
+            };
+        }
+
+        function renderEvaluationAndAnnouncement(ev, totalAnswered, totalCorrect, totalWrong) {
+            if (ev.isPassed) {
+                els.announcementBanner.className = 'rounded-3xl p-6 sm:p-8 border-2 border-emerald-400 bg-gradient-to-br from-emerald-50 via-teal-50 to-white shadow-lg shadow-emerald-900/5 transition-all';
+                els.announcementIcon.className = 'w-14 h-14 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-600/20';
+                els.announcementIcon.innerHTML = `
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                `;
+                els.announcementTag.className = 'px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider bg-emerald-600 text-white';
+                els.announcementTag.textContent = 'PENGUMUMAN HASIL SELEKSI';
+                els.announcementTier.textContent = ev.isStrongOverall
+                    ? 'Kategori: Level Sangat Kuat (Unggulan)'
+                    : 'Kategori: Target Aman Lolos';
+                els.announcementTitle.className = 'text-2xl sm:text-3xl font-extrabold tracking-tight text-emerald-950';
+                els.announcementTitle.textContent = 'SELAMAT! ANDA DINYATAKAN LOLOS';
+                els.announcementDesc.className = 'text-sm mt-1.5 leading-relaxed text-emerald-900';
+                els.announcementDesc.textContent = 'Seluruh indikator Kecepatan, Ketelitian, dan Stabilitas (Halaman 1–21) telah memenuhi patokan kandidat yang lolos seleksi.';
+            } else {
+                els.announcementBanner.className = 'rounded-3xl p-6 sm:p-8 border-2 border-rose-300 bg-gradient-to-br from-rose-50 via-orange-50/40 to-white shadow-lg shadow-rose-900/5 transition-all';
+                els.announcementIcon.className = 'w-14 h-14 rounded-2xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-600/20';
+                els.announcementIcon.innerHTML = `
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                `;
+                els.announcementTag.className = 'px-2.5 py-0.5 rounded-md text-[11px] font-extrabold uppercase tracking-wider bg-rose-600 text-white';
+                els.announcementTag.textContent = 'PENGUMUMAN HASIL SELEKSI';
+                els.announcementTier.textContent = 'Kategori: Belum Memenuhi Patokan Lolos';
+                els.announcementTitle.className = 'text-2xl sm:text-3xl font-extrabold tracking-tight text-rose-950';
+                els.announcementTitle.textContent = 'MOHON MAAF, ANDA BELUM LOLOS';
+
+                const failedAspects = [];
+                if (!ev.passSpeed) failedAspects.push(`Kecepatan (${ev.speedPer21Min.toFixed(1)} < 45 soal/menit)`);
+                if (!ev.passAcc) failedAspects.push(`Ketelitian (${ev.accuracyPct.toFixed(1)}% < 92%)`);
+                if (!ev.passStab) failedAspects.push('Stabilitas kurva Halaman 1–21');
+
+                els.announcementDesc.className = 'text-sm mt-1.5 leading-relaxed text-rose-900';
+                els.announcementDesc.textContent = `Belum memenuhi target aman lolos pada indikator: ${failedAspects.join('; ')}. Periksa grafik konsistensi dan patokan evaluasi di bawah.`;
+            }
+
+            const setReqBadge = (el, passed) => {
+                if (passed) {
+                    el.textContent = 'LOLOS';
+                    el.className = 'text-[11px] font-extrabold px-2.5 py-1 rounded-lg font-mono bg-emerald-100 text-emerald-800 shrink-0';
+                } else {
+                    el.textContent = 'BELUM';
+                    el.className = 'text-[11px] font-extrabold px-2.5 py-1 rounded-lg font-mono bg-rose-100 text-rose-800 shrink-0';
+                }
+            };
+            setReqBadge(els.reqSpeedStatus, ev.passSpeed);
+            setReqBadge(els.reqAccStatus, ev.passAcc);
+            setReqBadge(els.reqStabStatus, ev.passStab);
+
+            els.evalSpeedBadge.textContent = ev.speedBadge;
+            els.evalSpeedBadge.className = `text-[11px] font-bold px-2.5 py-1 rounded-lg ${ev.speedBadgeClass}`;
+            els.evalSpeedVal.textContent = ev.speedPer21Min.toFixed(1);
+            els.evalSpeedBar.style.width = `${Math.min(100, (ev.speedPer21Min / CONFIG.QUESTIONS_PER_PAGE) * 100)}%`;
+            els.evalSpeedDesc.textContent = ev.speedDesc;
+            els.evalSpeedTotal.textContent = `${totalAnswered.toLocaleString('id-ID')} soal`;
+
+            els.evalAccBadge.textContent = ev.accBadge;
+            els.evalAccBadge.className = `text-[11px] font-bold px-2.5 py-1 rounded-lg ${ev.accBadgeClass}`;
+            els.evalAccVal.textContent = `${ev.accuracyPct.toFixed(1)}%`;
+            els.evalAccBar.style.width = `${Math.min(100, ev.accuracyPct)}%`;
+            els.evalAccDesc.textContent = ev.accDesc;
+            els.evalAccRatio.textContent = `${totalCorrect.toLocaleString('id-ID')} / ${totalAnswered.toLocaleString('id-ID')} soal`;
+
+            els.evalStabBadge.textContent = ev.stabBadge;
+            els.evalStabBadge.className = `text-[11px] font-bold px-2.5 py-1 rounded-lg ${ev.stabBadgeClass}`;
+            els.evalStabVal.textContent = `±${ev.avgStepDiff.toFixed(1)}`;
+            const stabPctBar = Math.max(5, Math.min(100, 100 - (ev.avgStepDiff * 5)));
+            els.evalStabBar.style.width = `${ev.activePagesCount >= 18 ? stabPctBar : 15}%`;
+            els.evalStabDesc.textContent = ev.stabDesc;
+            els.evalStabMaxDiff.textContent = `${ev.maxStepDiff} soal`;
+            els.evalStabTrend.textContent = ev.trendText;
+
+            els.benchSpeedCell.innerHTML = `<span class="${ev.passSpeed ? 'text-emerald-700' : 'text-rose-700'}">${ev.speedPer21Min.toFixed(1)} soal/mnt</span><br><span class="text-[11px] text-slate-500">(${totalAnswered} soal)</span>`;
+            els.benchAccCell.innerHTML = `<span class="${ev.passAcc ? 'text-emerald-700' : 'text-rose-700'}">${ev.accuracyPct.toFixed(1)}%</span>`;
+            els.benchStabCell.innerHTML = `<span class="${ev.passStab ? 'text-emerald-700' : 'text-rose-700'}">±${ev.avgStepDiff.toFixed(1)} soal/mnt</span><br><span class="text-[11px] text-slate-500">(${ev.activePagesCount}/21 hal)</span>`;
+        }
+
+        function finishTest(reason) {
+            if (!state.isRunning) return;
+            state.isRunning = false;
+            clearInterval(state.timerInterval);
+
+            let totalAnswered = 0;
+            let totalCorrect = 0;
+            let totalWrong = 0;
+            const wrongItems = [];
+            const pageStats = [];
+
+            for (let p = 0; p < state.pages.length; p++) {
+                let pAnswered = 0;
+                let pCorrect = 0;
+                let pWrong = 0;
+
+                for (let q = 0; q < state.pages[p].length; q++) {
+                    const item = state.pages[p][q];
+                    if (item.userAnswer !== null) {
+                        totalAnswered++;
+                        pAnswered++;
+                        if (item.userAnswer === item.correctAnswer) {
+                            totalCorrect++;
+                            pCorrect++;
+                        } else {
+                            totalWrong++;
+                            pWrong++;
+                            wrongItems.push(item);
+                        }
+                    }
+                }
+
+                const prevAnswered = p > 0 ? pageStats[p - 1].answered : null;
+                const stepDiff = prevAnswered !== null ? (pAnswered - prevAnswered) : null;
+
+                pageStats.push({
+                    pageNum: p + 1,
+                    answered: pAnswered,
+                    correct: pCorrect,
+                    wrong: pWrong,
+                    stepDiff: stepDiff,
+                    accuracy: pAnswered > 0 ? ((pCorrect / pAnswered) * 100) : 0
+                });
+            }
+
+            const elapsedSec = Math.max(1, state.totalElapsedSeconds);
+            const ev = evaluateByPatokan(pageStats, totalAnswered, totalCorrect, totalWrong, elapsedSec);
+            const errorRatePct = totalAnswered > 0 ? ((totalWrong / totalAnswered) * 100) : 0;
+
+            els.resultBadge.textContent = reason;
+            els.resAnswered.textContent = totalAnswered.toLocaleString('id-ID');
+            els.resCompletionPct.textContent = `Target aman: ≥ 945 soal (${((totalAnswered / 2058) * 100).toFixed(1)}%)`;
+            els.resTimeUsed.textContent = `Durasi Aktif: ${formatTime(elapsedSec)}`;
+            els.resCorrect.textContent = totalCorrect.toLocaleString('id-ID');
+            els.resAccuracy.textContent = `${ev.accuracyPct.toFixed(1)}%`;
+            els.resWrong.textContent = totalWrong.toLocaleString('id-ID');
+            els.resErrorRate.textContent = `Tingkat salah: ${errorRatePct.toFixed(1)}%`;
+            els.resSpeed21.textContent = ev.speedPer21Min.toFixed(1);
+            els.resSpeedActive.textContent = `Tempo saat aktif: ${ev.activeTempo.toFixed(1)} soal/mnt`;
+
+            renderEvaluationAndAnnouncement(ev, totalAnswered, totalCorrect, totalWrong);
+            renderPageChartAndTable(pageStats);
+            renderWrongList(wrongItems, totalAnswered);
+
+            els.testScreen.classList.add('hidden');
+            els.resultScreen.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'auto' });
+        }
+
+        function renderPageChartAndTable(pageStats) {
+            const chartHTML = pageStats.map(stat => {
+                const correctPct = (stat.correct / CONFIG.QUESTIONS_PER_PAGE) * 100;
+                const wrongPct = (stat.wrong / CONFIG.QUESTIONS_PER_PAGE) * 100;
+
+                return `
+                    <div class="flex-1 flex flex-col items-center h-full justify-end group relative">
+                        <div class="opacity-0 group-hover:opacity-100 pointer-events-none absolute -top-8 bg-slate-900 text-white text-[10px] font-mono px-2 py-1 rounded whitespace-nowrap z-10 transition-opacity">
+                            Hal ${stat.pageNum}: ${stat.answered}/98 (${stat.correct} benar, ${stat.wrong} salah)
+                        </div>
+                        <span class="text-[10px] font-mono font-bold text-slate-600 mb-1">${stat.answered}</span>
+                        <div class="w-full max-w-[24px] bg-slate-100 rounded-t-md overflow-hidden flex flex-col-reverse border border-slate-200/60" style="height: 125px;">
+                            <div class="w-full bg-indigo-500 transition-all" style="height: ${correctPct}%"></div>
+                            <div class="w-full bg-rose-400 transition-all" style="height: ${wrongPct}%"></div>
+                        </div>
+                        <span class="text-[10px] font-mono font-semibold text-slate-500 mt-1.5">${stat.pageNum}</span>
+                    </div>
+                `;
+            }).join('');
+
+            els.pageChart.innerHTML = chartHTML;
+
+            const tableHTML = pageStats.map(stat => {
+                let diffText = '-';
+                if (stat.stepDiff !== null) {
+                    const sign = stat.stepDiff > 0 ? '+' : '';
+                    const color = Math.abs(stat.stepDiff) <= 10 ? 'text-slate-600' : 'text-rose-600 font-bold';
+                    diffText = `<span class="${color}">${sign}${stat.stepDiff} soal</span>`;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-50">
+                        <td class="py-2.5 px-4 font-bold text-slate-800">Halaman ${stat.pageNum}</td>
+                        <td class="py-2.5 px-4 text-slate-700">${stat.answered} / 98</td>
+                        <td class="py-2.5 px-4 text-emerald-700 font-semibold">${stat.correct}</td>
+                        <td class="py-2.5 px-4 text-rose-700 font-semibold">${stat.wrong}</td>
+                        <td class="py-2.5 px-4">${diffText}</td>
+                        <td class="py-2.5 px-4 text-slate-600">${stat.answered > 0 ? stat.accuracy.toFixed(1) + '%' : '-'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            els.pagesTableBody.innerHTML = tableHTML;
+            els.pagesTableContainer.classList.add('hidden');
+            els.pagesChevron.classList.remove('rotate-180');
+            els.togglePagesText.textContent = 'Lihat Tabel Rincian 21 Halaman';
+        }
+
+        function renderWrongList(wrongItems, totalAnswered) {
+            els.wrongBadgeCount.textContent = wrongItems.length.toLocaleString('id-ID');
+            els.wrongListContainer.classList.add('hidden');
+            els.wrongChevron.classList.remove('rotate-180');
+
+            if (wrongItems.length === 0) {
+                els.wrongList.innerHTML = `
+                    <div class="py-6 text-center text-sm text-slate-500">
+                        ${totalAnswered === 0
+                            ? 'Belum ada soal yang dijawab pada sesi ini.'
+                            : 'Sempurna! Tidak ada jawaban yang keliru.'}
+                    </div>
+                `;
+                return;
+            }
+
+            els.wrongList.innerHTML = wrongItems.map(item => `
+                <div class="py-3 flex flex-wrap items-center justify-between gap-2 text-sm">
+                    <div class="flex items-center gap-2.5">
+                        <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono text-xs font-semibold">
+                            Hal ${item.pageNum} • #${item.numInPage}
+                        </span>
+                        <span class="font-mono font-bold text-slate-900 text-base">${item.a} + ${item.b} = ${item.sum}</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-xs">
+                        <span class="px-2.5 py-1 rounded-lg bg-rose-50 text-rose-700 font-semibold border border-rose-200">
+                            Pilihan Anda: <strong class="font-mono">${item.userAnswer}</strong>
+                        </span>
+                        <span class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 font-semibold border border-emerald-200">
+                            Kunci: <strong class="font-mono">${item.correctAnswer}</strong>
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== Handler Pemilihan Tipe Soal =====
+        document.querySelectorAll('.type-option').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.getAttribute('data-type');
+                CONFIG.QUESTION_TYPE = type;
+
+                // Update tampilan aktif
+                document.querySelectorAll('.type-option').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Update hint
+                els.typeHint.textContent = TYPE_HINTS[type] || '';
+            });
+        });
+
+        els.btnStart.addEventListener('click', startTest);
+        els.btnRestart.addEventListener('click', startTest);
+
+        els.questionsList.addEventListener('click', (e) => {
+            const btn = e.target.closest('button[data-choice]');
+            if (!btn) return;
+            const choice = Number(btn.getAttribute('data-choice'));
+            if (choice === 0 || choice === 1) {
+                handleAnswer(choice);
+            }
+        });
+
+        els.btnFinishEarly.addEventListener('click', () => {
+            els.confirmPopover.classList.toggle('hidden');
+        });
+
+        els.btnCancelFinish.addEventListener('click', () => {
+            els.confirmPopover.classList.add('hidden');
+        });
+
+        els.btnConfirmFinish.addEventListener('click', () => {
+            els.confirmPopover.classList.add('hidden');
+            finishTest('Tes diakhiri lebih awal oleh peserta.');
+        });
+
+        els.btnTogglePages.addEventListener('click', () => {
+            const isHidden = els.pagesTableContainer.classList.toggle('hidden');
+            els.pagesChevron.classList.toggle('rotate-180');
+            els.togglePagesText.textContent = isHidden
+                ? 'Lihat Tabel Rincian 21 Halaman'
+                : 'Sembunyikan Tabel Rincian 21 Halaman';
+        });
+
+        els.btnToggleWrong.addEventListener('click', () => {
+            els.wrongListContainer.classList.toggle('hidden');
+            els.wrongChevron.classList.toggle('rotate-180');
+        });
+
+        window.addEventListener('resize', () => {
+            if (state.isRunning && !state.isWaitingNextPage) {
+                updateSpacers();
+                renderQuestionWindow(false);
+            }
+        });
+    </script>
+</body>
+</html>
